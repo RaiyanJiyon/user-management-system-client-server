@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { FaPen } from "react-icons/fa";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const UsersTable = () => {
     const [users, setUsers] = useState([]);
+
+    const loaderUser = useLoaderData();
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -79,7 +81,7 @@ const UsersTable = () => {
                                 <td>{user.status}</td>
                                 <td>
                                     <div className="flex justify-start items-center gap-4">
-                                        <Link className="flex justify-center items-center w-10 h-10 bg-white rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">
+                                        <Link to={`/update-users/${user._id}`} className="flex justify-center items-center w-10 h-10 bg-white rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">
                                             <FaPen className="text-violet-600" />
                                         </Link>
                                         <div onClick={() => handleDeleteUser(user._id)} className="flex justify-center items-center w-10 h-10 bg-white rounded-md cursor-pointer border border-gray-200 hover:bg-gray-200">

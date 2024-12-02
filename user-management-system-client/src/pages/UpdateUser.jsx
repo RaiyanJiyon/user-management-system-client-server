@@ -1,47 +1,51 @@
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const AddUsers = () => {
-    const handleAddUserForm = (e) => {
+const UpdateUser = () => {
+    const loaderUser = useLoaderData();
+
+    const { _id, name, email, gender, status } = loaderUser;
+
+    const handleUpdateUserForm = (e) => {
         e.preventDefault();
         const form = e.currentTarget;
         const formData = new FormData(form);
 
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const gender = formData.get('gender');
-        const status = formData.get('status');
+        const updatedUser = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            gender: formData.get('gender'),
+            status: formData.get('status')
+        };
 
-        const newUser = { name, email, gender, status };
-
-        fetch('http://localhost:5000/users', {
-            method: "POST",
+        fetch(`http://localhost:5000/users/${_id}`, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newUser)
+            body: JSON.stringify(updatedUser)
         })
             .then(res => {
                 if (!res.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Network issue');
                 }
                 return res.json();
             })
             .then(data => {
-                if (data.insertedId) {
+                if (data.modifiedCount > 0) {
                     Swal.fire({
                         position: "top-center",
                         icon: "success",
-                        title: "Data Inserted Successfully'",
+                        title: "User details have been updated!",
                         showConfirmButton: false,
                         timer: 1500
                     });
                 }
-                form.reset();
             })
             .catch(error => {
-                console.error('There has been a problem with your fetch operation:', error);
+                console.error('Error updating user:', error);
+                Swal.fire("Error!", "Something went wrong. Please try again.", "error");
             });
     };
 
@@ -53,10 +57,10 @@ const AddUsers = () => {
                 </Link>
             </div>
             <div>
-                <h2 className="text-2xl font-medium text-center">New User</h2>
-                <p className="font-medium text-center">Use the below form to create a new account</p>
+                <h2 className="text-2xl font-medium text-center">Update User</h2>
+                <p className="font-medium text-center">Use the below form to update user details</p>
 
-                <form onSubmit={handleAddUserForm} className="space-y-4">
+                <form onSubmit={handleUpdateUserForm} className="space-y-4">
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                             Name
@@ -65,6 +69,7 @@ const AddUsers = () => {
                             type="text"
                             name="name"
                             id="name"
+                            defaultValue={name}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 focus:ring focus:ring-violet-600 focus:outline-none"
                             placeholder="Enter user name"
                             required
@@ -78,6 +83,7 @@ const AddUsers = () => {
                             type="email"
                             name="email"
                             id="email"
+                            defaultValue={email}
                             className="mt-1 block w-full px-4 py-2 border border-gray-300 focus:ring focus:ring-violet-600 focus:outline-none"
                             placeholder="Enter user email"
                             required
@@ -92,6 +98,7 @@ const AddUsers = () => {
                                     name="gender"
                                     value="male"
                                     className="form-radio"
+                                    // defaultChecked={gender === `${loaderUser.gender}`}
                                 />
                                 <span className="ml-2">Male</span>
                             </label>
@@ -101,7 +108,7 @@ const AddUsers = () => {
                                     name="gender"
                                     value="female"
                                     className="form-radio"
-                                    // defaultChecked
+                                    // defaultChecked={gender === 'female'}
                                 />
                                 <span className="ml-2">Female</span>
                             </label>
@@ -116,7 +123,7 @@ const AddUsers = () => {
                                     name="status"
                                     value="active"
                                     className="form-radio"
-                                    // defaultChecked
+                                    // defaultChecked={status === `${loaderUser.status}`}
                                 />
                                 <span className="ml-2">Active</span>
                             </label>
@@ -126,6 +133,7 @@ const AddUsers = () => {
                                     name="status"
                                     value="inactive"
                                     className="form-radio"
+                                    // defaultChecked={status === 'inactive'}
                                 />
                                 <span className="ml-2">Inactive</span>
                             </label>
@@ -138,4 +146,4 @@ const AddUsers = () => {
     );
 };
 
-export default AddUsers;
+export default UpdateUser;
