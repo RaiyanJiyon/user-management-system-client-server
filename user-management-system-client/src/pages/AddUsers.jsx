@@ -1,8 +1,14 @@
+import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const AddUsers = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const handleAddUserForm = (e) => {
         e.preventDefault();
         const form = e.currentTarget;
@@ -47,16 +53,20 @@ const AddUsers = () => {
 
     return (
         <div className="w-11/12 mx-auto">
+            <Helmet>
+                <title>Add User | User Management System</title>
+            </Helmet>
+
             <div>
                 <Link to={'/'} className="flex items-center text-violet-600 mt-10">
                     <MdKeyboardDoubleArrowLeft className="text-2xl text-violet-600" /> All Users
                 </Link>
             </div>
-            <div>
+            <div className="mt-10">
                 <h2 className="text-2xl font-medium text-center">New User</h2>
                 <p className="font-medium text-center">Use the below form to create a new account</p>
 
-                <form onSubmit={handleAddUserForm} className="space-y-4">
+                <form onSubmit={handleAddUserForm} className="space-y-4 mt-6">
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                             Name
@@ -101,7 +111,7 @@ const AddUsers = () => {
                                     name="gender"
                                     value="female"
                                     className="form-radio"
-                                    // defaultChecked
+                                // defaultChecked
                                 />
                                 <span className="ml-2">Female</span>
                             </label>
@@ -116,7 +126,7 @@ const AddUsers = () => {
                                     name="status"
                                     value="active"
                                     className="form-radio"
-                                    // defaultChecked
+                                // defaultChecked
                                 />
                                 <span className="ml-2">Active</span>
                             </label>

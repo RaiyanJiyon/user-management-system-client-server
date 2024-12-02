@@ -1,6 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+    const links = <>
+        <NavLink to={'/'} className={({ isActive }) => isActive ? "text-violet-600 font-bold underline" : "text-black font-medium"}>Home</NavLink>
+        <NavLink to={'/add-users'} className={({ isActive }) => isActive ? "text-violet-600 font-bold underline" : "text-black font-medium"}>Add New User</NavLink>
+    </>
     return (
         <div className="navbar bg-[#18D29F]">
             <div className="navbar-start">
@@ -22,20 +26,18 @@ const Navbar = () => {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><Link to={'/'}>Home</Link></li>
-                        <li><Link to={'/add-users'}>Add New User</Link></li>
+                        {links}
                     </ul>
                 </div>
-                <Link to={'/'} className="btn btn-ghost text-xl">User Management System</Link>
+                <Link to={'/'} className="btn btn-ghost md:text-xl">User Management System</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
-                    <li><Link to={'/'}>Home</Link></li>
-                    <li><Link to={'/add-users'}>Add New User</Link></li>
+                <ul className="menu menu-horizontal px-1 gap-4">
+                    {links}
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Sign In</a>
+                <a className="btn btn-xs md:btn-md">Sign In</a>
             </div>
         </div>
     );
