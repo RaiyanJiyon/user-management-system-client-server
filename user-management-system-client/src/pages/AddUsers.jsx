@@ -33,12 +33,12 @@ const AddUsers = () => {
                     Swal.fire({
                         position: "top-center",
                         icon: "success",
-                        title: "User has been saved",
+                        title: "Data Inserted Successfully'",
                         showConfirmButton: false,
                         timer: 1500
                     });
                 }
-                console.log(data);
+                form.reset();
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
