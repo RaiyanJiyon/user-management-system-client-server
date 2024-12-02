@@ -61,6 +61,27 @@ async function run() {
             }
         });
 
+        app.put('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const updatedUsers = req.body;
+            const user = {
+                $set: {
+                    name: updatedUsers.name,
+                    email: updatedUsers.email,
+                    gender: updatedUsers.gender,
+                    status: updatedUsers.status,
+                }
+            }
+            try {
+                const result = await usersCollection.updateOne(filter, user);
+                res.status(200).send(result);
+            } catch (error) {
+                console.error("Error updating user:", error);
+                res.status(500).send({ error: "Failed to update user" });
+            };
+        });
+
         app.delete('/users/:id', async (req, res) => {
             try {
                 const id = req.params.id;
