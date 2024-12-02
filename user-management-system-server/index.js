@@ -27,6 +27,16 @@ async function run() {
 
         const usersCollection = client.db("usersDB").collection("users");
 
+        app.get('/users', async (req, res) => {
+            try {
+                const cursor = usersCollection.find();
+                const result = await cursor.toArray();
+                res.status(200).send(result);
+            } catch (error) {
+                res.status(500).send({ error: "Failed to fetch coffee data" });
+            };
+        });
+
         app.post('/users', async (req, res) => {
             try {
                 const user = req.body;
@@ -34,7 +44,7 @@ async function run() {
                 res.status(201).json(result);
 
             } catch (error) {
-                console.error('Error occurs - ',error);
+                console.error('Error occurs - ', error);
                 res.status(500).json({ message: 'Internal Server Error' });
             }
         });
